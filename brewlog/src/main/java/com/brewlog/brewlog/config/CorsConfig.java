@@ -11,12 +11,10 @@ public class CorsConfig {
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
-            public void addMapping(String path) {
-                corsRegistry.addMapping("/api/**") // Protects your brew routes
-                        .allowedOrigins(
-                                "http://localhost:5173", // Permits local Vite testing
-                                "https://*.vercel.app"   // Permits all Vercel deployments safely via wildcard
-                        )
+            @Override
+            public void addCorsMappings(CorsRegistry registry) { // FIX: Changed parameter variable name here
+                registry.addMapping("/api/**")
+                        .allowedOrigins("http://localhost:5173", "https://*.vercel.app")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
